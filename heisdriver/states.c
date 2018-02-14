@@ -34,8 +34,10 @@ void illuminate_floor_lights(void){
 //checks buttons and acts accordingly
 void update() {
     //updates current floor and floor state
-    CURRENTFLOOR = elev_get_floor_sensor_signal();
-    floor_state = CURRENTFLOOR;
+    if(elev_get_floor_sensor_signal()!=-1){
+        CURRENTFLOOR = elev_get_floor_sensor_signal();
+        floor_state = CURRENTFLOOR;
+    }
 
     //changes direction when top and bottom floors are reached
     if (elev_get_floor_sensor_signal() == N_FLOORS - 1) {
@@ -62,26 +64,28 @@ void update() {
     //sets floor indicator light
     illuminate_floor_lights();
 
-    //goes to floor if "bestillingsknapp" is pressed
-    if (elev_get_button_signal(BUTTON_COMMAND, 0)) { go_to_floor(0);}
-    if (elev_get_button_signal(BUTTON_COMMAND, 1)) { go_to_floor(1);}
-    if (elev_get_button_signal(BUTTON_COMMAND, 2)) { go_to_floor(2);}
-    if (elev_get_button_signal(BUTTON_COMMAND, 3)) { go_to_floor(3);}
+    check_elevator_panel_buttons();
+
 }
 
 void go_to_floor(int floor){
-    int floorReached = 0;
-    while (!floorReached) {
-        if (floor == elev_get_floor_sensor_signal()) {
+  
+    if(CURRENTFLOOR > floor && state == MOVE_UP){
+        state = MOVE_DOWN;
+    }
+    else if(CURRENTFLOOR < floor && state == MOVE_DOWN){
+        state = MOVE_UP;
+    }
+}
+
+//DETTE FUNKER IKKE
+void check_elevator_panel_buttons() {
+    for (int i=0;i<N_FLOORS;i++) {
+        if (elev_get_button_signal(BUTTON_COMMAND, i)) {
+            go_to_floor(i);
+        }
+        if (i == elev_get_floor_sensor_signal()) {
             state = STOP_ELEVATOR;
-            floorReached =1;
-        }
-        else if(CURRENTFLOOR > floor && state == MOVE_UP){
-            state = MOVE_DOWN;
-        }
-        else if(CURRENTFLOOR < floor && state == MOVE_DOWN){
-            state = MOVE_UP;
         }
     }
-
 }
