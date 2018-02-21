@@ -1,13 +1,6 @@
-
+#include "illumination.h"
 #include "elevator_ctrl.h"
 #include "elevator_io.h"
-
-
-#define direction_t elev_motor_direction_t
-#define UP DIRN_UP
-#define DOWN DIRN_DOWN
-#define STOP DIRN_STOP
-
 
 direction_t direction = UP;
 int currentFloor = -1;
@@ -26,6 +19,7 @@ void setCurrentFloor(int floor){
 State_t getState() {
     return state;
 }
+
 void setState(State_t s){
     state = s;
     switch (state) {
@@ -61,9 +55,7 @@ int doorIsOpen(){
     return doorOpen;
 }
 
-int getFloorSensor(){
-    return elev_get_floor_sensor_signal();
-}
+
 
 void elevatorInitiate(){
     int floor = getFloorSensor();
@@ -78,4 +70,42 @@ void elevatorInitiate(){
 
 }
 
+
+
+void update() {
+    setFloorLight();
+}
+
+
+//////////////////////////////////////////////////////////////////////
+//HERIFRA OG NED IKKE TESTET - IKKE FERDIG
+void updateQueue() {
+    
+}
+
+void addToQueue(int floornumber, int dirnumber) {
+    for (int i = 0; i<NUMBER_OF_BUTTONS; i++) {
+        if (queue[i][0] == 0) {
+            queue[i][0] = floornumber;
+            queue[i][1] = dirnumber;
+        }
+    }
+}
+
+void moveQueueForward() {
+    for(int i = 1; i < NUMBER_OF_BUTTONS; i++) {
+        if(queue[i-1][0] == 0) {
+        queue[i-1][0] = queue[i][0];
+        queue[i-1][1] = queue[i][1];
+        }
+    }
+}
+
+void deleteFromQueue(int floornumber, int dirnumber) {
+    for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
+        if (queue[i][0] = floornumber && queue[i][1] == dirnumber) {
+            queue[i][0] = queue[i][1] = -1;
+        }
+    }
+}
 
