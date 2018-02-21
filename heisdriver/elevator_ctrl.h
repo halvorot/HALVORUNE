@@ -42,3 +42,12 @@ int elevatorIsInFloor();
 void elevatorInitiate();
 
 void update();
+
+///////////////////////////////////////////////////////////////
+//Endre fra int dirnumber til button_t og fiks funk
+void updateQueue();
+void addToQueue(int floornumber, int dirnumber);
+
+void moveQueueForward();
+
+void deleteFromQueue(int floornumber, int dirnumber);
