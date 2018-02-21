@@ -4,19 +4,11 @@
 
 
 void startMotor() {
-    direction_t dir = getDirection();
-    elev_set_motor_direction(dir);
-    if(dir == UP){
-        setState(MOVING_UP);
-    } 
-    else if (dir == DOWN){
-        setState(MOVING_DOWN);
-    }
+    elev_set_motor_direction(getDirection());
 }
 
 void stopMotor() {
     elev_set_motor_direction(STOP);
-    setState(WAIT);
 }
 
 void openDoor(){

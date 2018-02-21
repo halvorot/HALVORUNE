@@ -1,5 +1,12 @@
-#include "elev.h"
+
 #include "elevator_ctrl.h"
+#include "elevator_io.h"
+
+
+#define direction_t elev_motor_direction_t
+#define UP DIRN_UP
+#define DOWN DIRN_DOWN
+#define STOP DIRN_STOP
 
 
 direction_t direction = UP;
@@ -21,6 +28,22 @@ State_t getState() {
 }
 void setState(State_t s){
     state = s;
+    switch (state) {
+        case MOVING_UP:
+            direction = UP;
+            startMotor();
+            break;
+        case MOVING_DOWN:
+            direction = DOWN;
+            startMotor();
+            break;
+        case WAIT:
+            direction = STOP;
+            stopMotor();
+            break;
+        case EMERGENCY_STOP: //not in use yet
+            break;
+    }
 }
 
 direction_t getDirection() {
@@ -38,7 +61,20 @@ int doorIsOpen(){
     return doorOpen;
 }
 
+int getFloorSensor(){
+    return elev_get_floor_sensor_signal();
+}
+
 void elevatorInitiate(){
+    int floor = getFloorSensor();
+    if(floor != -1){
+        setCurrentFloor(floor);
+    }
+    else{
+        setState(MOVING_UP);
+        while(getFloorSensor() == -1){ /*intentionally empty, waits until it reaches floor*/ }
+        setState(WAIT);
+    }
 
 }
 

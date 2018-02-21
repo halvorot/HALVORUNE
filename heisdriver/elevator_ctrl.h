@@ -1,4 +1,4 @@
-
+#include "elev.h"
 
 typedef enum {
     MOVING_UP, 
@@ -11,7 +11,6 @@ typedef enum {
 #define UP DIRN_UP
 #define DOWN DIRN_DOWN
 #define STOP DIRN_STOP
-
 
 
 #define NUMBER_OF_FLOORS 4
@@ -30,5 +29,6 @@ void setDirection(direction_t dir);
 
 int motorIsRunning();
 int doorIsOpen();
+int elevatorIsInFloor();
 
 void elevatorInitiate();
