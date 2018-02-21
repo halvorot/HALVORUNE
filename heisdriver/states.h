@@ -7,7 +7,7 @@ typedef enum {FLOOR_0, FLOOR_1, FLOOR_2, FLOOR_3} floor_states;
 
 void illuminate_floor_lights();
 
-void update();
+void update_old();
 
 void go_to_floor(int floor);
 

@@ -1,5 +1,5 @@
 #include "elev.h"
-#include "states.h"
+#include "elevator_ctrl.h"
 #include <stdio.h>
 
 
@@ -15,10 +15,11 @@ int main() {
 
     elev_set_motor_direction(DIRN_UP);
     
+    elevatorInitiate();
 
     while (1) {
         
-        update();
+        
 
         // Change direction when we reach top/bottom floor
         /*if (elev_get_floor_sensor_signal() == N_FLOORS - 1) {

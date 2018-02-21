@@ -32,7 +32,7 @@ void illuminate_floor_lights(void){
 }
 
 //checks buttons and acts accordingly
-void update() {
+void update_old() {
     //updates current floor and floor state
     if(elev_get_floor_sensor_signal()!=-1){
         CURRENTFLOOR = elev_get_floor_sensor_signal();
