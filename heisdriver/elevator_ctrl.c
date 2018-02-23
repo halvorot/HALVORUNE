@@ -104,13 +104,14 @@ void moveQueueForward() {
     	int newcounter = 0;
 	for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
 		if (queue[i] != 0) {
-			queue[newcounter] = queue[i];
+			queue[newcounter][0] = queue[i][0];
+			queue[newcounter][1] = queue[i][1];
 			newcounter++;
 		}
 	}
 	for (int i = newcounter; i < NUMBER_OF_BUTTONS; i++)
 	{
-		queue[i] = 0;
+		queue[i][0] = queue[i][1] = 0;
 	}
     */
     
